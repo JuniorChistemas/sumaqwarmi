@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sumaqwarmi2/src/pages/Categoria.dart';
-import 'package:sumaqwarmi2/src/pages/Login.dart';
-import 'package:sumaqwarmi2/src/pages/Popular.dart';
+import 'package:sumaqwarmi2/src/pages/categoria.dart';
+import 'package:sumaqwarmi2/src/pages/login.dart';
+import 'package:sumaqwarmi2/src/pages/popular.dart';
 
 
 class Menu extends StatefulWidget {
@@ -22,10 +22,10 @@ class _MenuState extends State<Menu> {
   // funcion para indicar el index de la pagina segun corresponda
   Widget _callPage(int n){
     switch(n){
-      case 0: return const popular();
-      case 1: return const categoria();
-      case 2: return const login();
-      default: return const popular();
+      case 0: return const Popular();
+      case 1: return const Categoria();
+      case 2: return const Login();
+      default: return const Popular();
     }
   }
   //creamos la barra de navegacion en la parte inferior del aplicativo
@@ -33,7 +33,7 @@ class _MenuState extends State<Menu> {
     return Theme(data: Theme.of(context).copyWith(
       //canvasColor: Color.fromRGBO(55, 57, 84, 1.0),
         primaryColor: Colors.pinkAccent,
-       // textTheme: Theme.of(context).textTheme.copyWith(caption: const TextStyle(color: Color.fromRGBO(116, 117, 152, 1.0)))
+       //textTheme: Theme.of(context).textTheme.copyWith(caption: const TextStyle(color: Color.fromRGBO(116, 117, 152, 1.0)))
     ),
       child: BottomNavigationBar(
         currentIndex: pagina,
