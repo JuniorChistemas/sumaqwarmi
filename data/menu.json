@@ -1,0 +1,40 @@
+{
+  "nombreApp" : "Componentes",
+  "rutas" : [
+    {
+      "ruta" : "cabello",
+      "icon" : "account_circle",
+      "texto": "Cabello"
+    },
+    {
+      "ruta" : "exfoliantes",
+      "icon" : "adb_sharp",
+      "texto": "Exfoliantes"
+    },
+    {
+      "ruta" : "faciales",
+      "icon" : "account_circle_outlined",
+      "texto": "Faciales"
+    },
+    {
+      "ruta" : "jabones",
+      "icon" : "account_balance_wallet_sharp",
+      "texto": "Jabones-Organicos"
+    },
+    {
+      "ruta" : "marcarillas",
+      "icon" : "add_card_rounded",
+      "texto": "Mascarilla"
+    },
+    {
+      "ruta" : "kits",
+      "icon" : "ac_unit",
+      "texto": "Kits"
+    },
+    {
+      "ruta" : "mas",
+      "icon" : "production_quantity_limits",
+      "texto": "Mas productos"
+    }
+  ]
+}

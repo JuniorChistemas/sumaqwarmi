@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sumaqwarmi2/src/providers/categoria_provider.dart';
 import 'package:sumaqwarmi2/src/providers/inicio_provider.dart';
 import 'package:card_swiper/card_swiper.dart';
+import 'package:sumaqwarmi2/src/utils/icono_string.dart';
 class home extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -16,8 +18,7 @@ class home extends StatelessWidget {
       body: ListView(
         children:<Widget> [
           cuerpo(),
-          //rgb(252,212,222)
-          Divider(height: 30.0,color: Color.fromRGBO(252, 212, 222, 0.6)),
+          Divider(height: 30.0,color: Color.fromRGBO(2352, 212, 222, 0.6)),
           Text("PRODUCTOS POPULARES",textAlign: TextAlign.center),
           Divider(height: 30.0,color: Color.fromRGBO(252, 212, 222, 0.6)),
           botom(),
@@ -67,8 +68,10 @@ class home extends StatelessWidget {
           print("house");
         }else if(index==1){
           print("categoria");
+          //aqui iniciamos el menu lateral para que se reconozca
           _scaffoldKey.currentState?.openDrawer();
         }else if(index==2){
+          //menu del perfil de usuaurio
           print("perfil");
         }else{
           print("house 0");
@@ -82,7 +85,7 @@ class home extends StatelessWidget {
         padding: EdgeInsets.zero,
         children:<Widget> [
           DrawerHeader(
-              child: Text("Categorias"),
+              child: Container(),
               decoration: BoxDecoration(
                   image: DecorationImage(
                   image: AssetImage("assets/fondoR.jpg"),
@@ -91,69 +94,8 @@ class home extends StatelessWidget {
               ),
               padding: EdgeInsets.all(20.0),
           ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text("INICIO"),
-            onTap: (){
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text("Cabello"),
-            onTap: (){
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.adb_sharp),
-            title: Text("Exfoliantes"),
-            onTap: (){
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.account_circle_outlined),
-            title: Text("Faciales"),
-            onTap: (){
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.account_balance_wallet_sharp),
-            title: Text("Jabones organicos"),
-            onTap: (){
-
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.add_card_rounded),
-            onTap: (){
-
-            },
-            title: Text("kits"),
-          ),
-          ListTile(
-            leading: Icon(Icons.add_card_rounded),
-            onTap: (){
-
-            },
-            title: Text("kits"),
-          ),
-          ListTile(
-            leading: Icon(Icons.add_card_rounded),
-            onTap: (){
-
-            },
-            title: Text("kits"),
-          ),
-          ListTile(
-            leading: Icon(Icons.production_quantity_limits),
-            title: Text("Mas Productos"),
-            onTap: (){
-
-            },
-          ),
+          //_lista(),
+          //aqui voy a agregar la lista de items
 
         ],
       ),
@@ -198,5 +140,38 @@ class home extends StatelessWidget {
         scale: 0.1,
       ),
     );
+  }
+
+  Widget _lista(){
+    return FutureBuilder(future: menu.cargarRutas(),
+      initialData: [],
+      builder: (context,AsyncSnapshot sna){
+        return ListView(
+          // imprimir por consola el sna.data para verificar algo
+          children: _listaItems(sna.data,context),
+        );
+      },
+    );
+  }
+  List<Widget> _listaItems(List<dynamic> data,BuildContext context){
+    final List<Widget> opciones =[];
+    //el error salia por que cuando el forEach itera inicialmente es una lista vacia
+    data.forEach((opt) {
+      final WidgetTemp = ListTile(
+        title: Text(opt['texto']),
+        leading: getIcon(opt['icon']),
+        //trailing: Icon(Icons.arrow_right),
+        onTap: (){
+          //final route = MaterialPageRoute(builder: (context){
+          //return AlertPage();
+          //}
+          //);
+          //Navigator.push(context, route);
+          Navigator.pushNamed(context, opt['ruta']);
+        },
+      );
+      opciones..add(WidgetTemp)..add(Divider());
+    });
+    return opciones;
   }
 }
