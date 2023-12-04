@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sumaqwarmi2/src/bloc/provider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -35,7 +36,13 @@ class Login extends StatelessWidget {
       height: 100.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
-        color: Color.fromRGBO(255, 255, 255, 0.05),
+        //color: Color.fromRGBO(255, 255, 255, 0.05),
+          gradient: LinearGradient(
+              colors:<Color> [
+                Color.fromRGBO(236, 98, 188, 0.5),
+                Color.fromRGBO(241, 142, 172, 0.5),
+              ]
+          )
       ),
     );
     final icono = Container(
@@ -51,17 +58,16 @@ class Login extends StatelessWidget {
     return Stack(
       children:<Widget> [
         fondo,
-        Positioned(child: circulo, top: 90.0, left: 30.0,),
+        Positioned(child: circulo, top: 90.0, left: -25.0,),
         Positioned(child: circulo, top: -40.0, right: -30.0,),
-        Positioned(child: circulo, bottom: -50.0, right: -10.0,),
-        Positioned(child: circulo, bottom: 120.0, right: 20.0,),
-        Positioned(child: circulo, bottom: -50.0, left: -20.0,),
         icono
       ],
     );
   }
   Widget _cuadroDatos(BuildContext context){
+    final bloc = Provider.of(context);
     final size = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
         children:<Widget> [
@@ -82,15 +88,15 @@ class Login extends StatelessWidget {
                     offset: Offset(0.0,5.0),
                     spreadRadius: 3.0,
                   ),
-                ]
+                ],
             ),
             child: Column(
               children:<Widget> [
                 const Text("INGRESO",style: TextStyle(fontSize: 20.0),),
                 const SizedBox(height: 60.0),
-                _crearCorreo(),
+                _crearCorreo(bloc),
                 const SizedBox(height: 30.0),
-                _crearPassword(),
+                _crearPassword(bloc),
                 const SizedBox(height: 30.0),
                 _crearBoton(),
               ],
@@ -100,29 +106,47 @@ class Login extends StatelessWidget {
       ),
     );
   }
-  Widget _crearCorreo(){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            icon: Icon(Icons.alternate_email),
-            hintText: 'ejemplo.@gmailcom',
-            labelText: 'correo electronico'
-        ),
-      ),
+  Widget _crearCorreo(LoginBloc bloc){
+
+    return StreamBuilder(
+        stream: bloc.emailStream,
+        initialData: '',
+        builder: (context,AsyncSnapshot<String> sna){
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.alternate_email),
+                  hintText: 'ejemplo.@gmailcom',
+                  labelText: 'correo electronico',
+                  counterText: sna.data.toString(),
+                  errorText: sna.error.toString()
+                ),
+                onChanged: bloc.changeGmail,
+              ),
+            );
+        },
     );
   }
-  Widget _crearPassword(){
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-            icon: Icon(Icons.lock),
-            labelText: 'contraseña'
-        ),
-      ),
+  Widget _crearPassword(LoginBloc bloc){
+    return StreamBuilder(
+        stream: bloc.passwordStream,
+        builder:(BuildContext context,AsyncSnapshot sna){
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: TextField(
+              obscureText: true,
+              decoration: InputDecoration(
+                  icon: Icon(Icons.lock),
+                  labelText: 'contraseña',
+                  counterText: sna.data.toString(),
+                  errorText: sna.error.toString(),
+              ),
+              onChanged: bloc.changePassword,
+            ),
+          );
+        },
     );
   }
   Widget _crearBoton(){
