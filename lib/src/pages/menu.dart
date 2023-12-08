@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sumaqwarmi2/src/pages/administrador.dart';
 import 'package:sumaqwarmi2/src/pages/categoria.dart';
-import 'package:sumaqwarmi2/src/pages/login.dart';
+//import 'package:sumaqwarmi2/src/pages/login.dart';
 import 'package:sumaqwarmi2/src/pages/popular.dart';
 
 
@@ -24,7 +25,7 @@ class _MenuState extends State<Menu> {
     switch(n){
       case 0: return const Popular();
       case 1: return const Categoria();
-      case 2: return const Login();
+      case 2: return const AdministradorPage();
       default: return const Popular();
     }
   }

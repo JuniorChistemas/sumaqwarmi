@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sumaqwarmi2/src/bloc/provider.dart';
+import 'package:sumaqwarmi2/src/pages/administrador.dart';
 import 'package:sumaqwarmi2/src/pages/menu.dart';
 void main() {
   runApp(const MyApp());
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         initialRoute: 'menu',
         routes: {
           'menu' : (BuildContext context) => const Menu(),
+          'administrador' : (BuildContext context) => const AdministradorPage(),
         },
       ),
     );
