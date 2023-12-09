@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "860262776454",
+    "project_id": "sumaqwarmi-c2048",
+    "storage_bucket": "sumaqwarmi-c2048.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860262776454:android:6323bbc13a099de3d35b07",
+        "android_client_info": {
+          "package_name": "com.example.sumaqwarmi2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX1Jeqc8Kx5ihunu-DEFSu93bZupY9UHI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

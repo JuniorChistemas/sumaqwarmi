@@ -25,7 +25,7 @@ class _MenuState extends State<Menu> {
     switch(n){
       case 0: return const Popular();
       case 1: return const Categoria();
-      case 2: return const AdministradorPage();
+      case 2: return  AdministradorPage();
       default: return const Popular();
     }
   }

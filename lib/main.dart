@@ -1,9 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sumaqwarmi2/firebase_options.dart';
 import 'package:sumaqwarmi2/src/bloc/provider.dart';
 import 'package:sumaqwarmi2/src/pages/administrador.dart';
 import 'package:sumaqwarmi2/src/pages/menu.dart';
-void main() {
+import 'package:sumaqwarmi2/src/pages/producto.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -23,7 +31,8 @@ class MyApp extends StatelessWidget {
         initialRoute: 'menu',
         routes: {
           'menu' : (BuildContext context) => const Menu(),
-          'administrador' : (BuildContext context) => const AdministradorPage(),
+          'administrador' : (BuildContext context) => AdministradorPage(),
+          'producto': (BuildContext context) =>   ProductoPage(),
         },
       ),
     );
