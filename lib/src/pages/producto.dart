@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sumaqwarmi2/src/bloc/provider.dart';
 import 'package:sumaqwarmi2/src/models/productoModel.dart';
-import 'package:sumaqwarmi2/src/providers/productoProvider.dart';
 import 'package:sumaqwarmi2/src/utils/validaciones.dart' as val;
 
 
 class ProductoPage extends StatefulWidget {
-  const ProductoPage({super.key});
-
   @override
   State<ProductoPage> createState() => _ProductoPageState();
 }
@@ -17,11 +15,9 @@ class ProductoPage extends StatefulWidget {
 class _ProductoPageState extends State<ProductoPage> {
 
   ProductoModel producto = new ProductoModel();
-
+  List<String> _categoria = ['Mascarrillas','Exfoliantes','Faciales','Jabones organicos','Cremas','Kits','Tonicos faciales','Otros'];
   //bool
   bool _guardando = false;
-
-  final db = new ProductoProvider();
 
   //key para validar el formulario
   final llaveForm = GlobalKey<FormState>();
@@ -34,6 +30,9 @@ class _ProductoPageState extends State<ProductoPage> {
   Widget build(BuildContext context) {
     //tomamos el argumento
     final ProductoModel? productoUpdate = ModalRoute.of(context)!.settings.arguments as ProductoModel?;
+
+    final productoBloc = Provider.productosBloc(context);
+
     if (productoUpdate?.idu != null) {
       producto = productoUpdate!;
     }
@@ -69,7 +68,7 @@ class _ProductoPageState extends State<ProductoPage> {
                 _tratamiento(),
                 _beneficios(),
                 _populares(),
-                _crearBotom(),
+                _crearBotom(productoBloc),
               ],
             ),
           ),
@@ -115,7 +114,16 @@ class _ProductoPageState extends State<ProductoPage> {
       ),
     );
   }
-  Widget _tratamiento(){
+  List<DropdownMenuItem<String>>getOptiones(){
+    List<DropdownMenuItem<String>> datos = _categoria.map<DropdownMenuItem<String>>((String opt){
+      return DropdownMenuItem(
+          child: Text(opt),
+          value: opt
+      );
+    }).toList();
+    return datos;
+  }
+  Widget _tratamiento2(){
     return TextFormField(
       initialValue: producto.tratamiento,
       onSaved: (value) => producto.tratamiento = value,
@@ -123,6 +131,24 @@ class _ProductoPageState extends State<ProductoPage> {
           labelText: 'Tratamiento'
       ),
     );
+  }
+  Widget _tratamiento(){
+    return
+      Row(
+        children: [
+          Icon(Icons.select_all_outlined),
+          SizedBox(width: 40),
+          DropdownButton(
+              value: producto.tratamiento,
+              items: getOptiones(),
+              onChanged: (opt){
+                setState(() {
+                  producto.tratamiento = opt.toString();
+                });
+              }
+          )
+        ],
+      );
   }
   Widget _beneficios(){
     return TextFormField(
@@ -133,10 +159,11 @@ class _ProductoPageState extends State<ProductoPage> {
       ),
     );
   }
-  Widget _crearBotom(){
+
+  Widget _crearBotom(ProductoBloc bloc){
     return ElevatedButton(
         onPressed: (){
-          (_guardando)?null:enviarDatos();
+          (_guardando)?null:enviarDatos(bloc);
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 20.0,horizontal: 10.0),
@@ -151,7 +178,7 @@ class _ProductoPageState extends State<ProductoPage> {
         )
     );
   }
-  void enviarDatos() async{
+  void enviarDatos(ProductoBloc bloc) async{
     if(!llaveForm.currentState!.validate()) return;
     print('Todos correcto');
     llaveForm.currentState?.save();
@@ -159,13 +186,13 @@ class _ProductoPageState extends State<ProductoPage> {
       _guardando = true;
     });
     if(foto!=null){
-      producto.foto = await db.subirImagen(foto!);
+      producto.foto = await bloc.SubirFotos(foto!);
     }
     if(producto.idu==null){
       print("entre en el condicional para guardar");
-      await db.CrearProducto(producto);
+      bloc.AgregarProductos(producto);
     }else{
-      await db.ActualizarProducto(producto);
+      bloc.EditarProductos(producto);
     }
     setState(() {
       _guardando = false;

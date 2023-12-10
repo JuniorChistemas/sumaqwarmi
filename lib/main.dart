@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: 'menu',
         routes: {
-          'menu' : (BuildContext context) => const Menu(),
+          'menu' : (BuildContext context) => Menu(),
           'administrador' : (BuildContext context) => AdministradorPage(),
-          'producto': (BuildContext context) =>   ProductoPage(),
+          'producto': (BuildContext context) =>    ProductoPage(),
         },
       ),
     );

@@ -30,7 +30,7 @@ class CardPopular extends StatelessWidget {
                 ),
               ));
         },
-        itemCount: 3,
+        itemCount: 4,
         itemWidth: _screnSize.width*0.85,
         itemHeight: _screnSize.height*0.50,
         //pagination: SwiperPagination(),

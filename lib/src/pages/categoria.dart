@@ -51,19 +51,25 @@ class _CategoriaState extends State<Categoria> {
           color: Color.fromRGBO(62, 66, 107, 0.7),
           borderRadius: BorderRadius.circular(20.0)
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children:<Widget> [
-          SizedBox(height: 5.0,),
-          CircleAvatar(
-            backgroundColor: color,
-            radius: 35.0,
-            child: Icon(icono,color: Colors.white,size: 20,),
-          ),
-          Text(texto,style: TextStyle(color: Colors.pinkAccent),),
-          SizedBox(height: 5.0,),
-        ],
-      ),
+      child: GestureDetector(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children:<Widget> [
+            SizedBox(height: 5.0,),
+            CircleAvatar(
+              backgroundColor: color,
+              radius: 35.0,
+              child: Icon(icono,color: Colors.white,size: 20,),
+            ),
+            Text(texto,style: TextStyle(color: Colors.pinkAccent),),
+            SizedBox(height: 5.0,),
+          ],
+        ),
+        onTap: (){
+          //Navigator.pushNamed(context, pagina,arguments: );
+          print('hizo click.... !!!!!!');
+        },
+      )
     );
   }
   Widget _botonesRedondeados(){

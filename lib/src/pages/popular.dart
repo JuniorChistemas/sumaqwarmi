@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sumaqwarmi2/src/providers/productoProvider.dart';
+import 'package:sumaqwarmi2/src/bloc/provider.dart';
 import 'package:sumaqwarmi2/src/widgets/fondo.dart';
 import 'package:sumaqwarmi2/src/widgets/popular.dart';
 
 class Popular extends StatelessWidget {
-  final productosProvider = new ProductoProvider();
 
   @override
   Widget build(BuildContext context) {
+    final productoBloc = Provider.productosBloc(context);
+    productoBloc.cargarProductosPopulares();
     return  Scaffold(
       body: Stack(
       children:<Widget> [
@@ -22,7 +23,7 @@ class Popular extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
                     SizedBox(height: 10.0,),
-                    _targetas(),
+                    _targetas(productoBloc),
                   ],
                 ),
               ),
@@ -49,12 +50,12 @@ class Popular extends StatelessWidget {
         )
     );
   }
-  Widget _targetas(){
-    return FutureBuilder(
-        future: productosProvider.cargarDatosPopulares(),
+  Widget _targetas(ProductoBloc productoBloc){
+    return StreamBuilder(
+        stream: productoBloc.productosStream,
         builder: (BuildContext context, AsyncSnapshot snapshot){
           if(snapshot.hasData){
-            return CardPopular(productos: snapshot.data);
+            return CardPopular(productos: snapshot.data!);
           }else{
             return Container(
                 height: 400.0,
@@ -63,7 +64,8 @@ class Popular extends StatelessWidget {
                 )
             );
           }
-        });
+        }
+    );
   }
   
 }
