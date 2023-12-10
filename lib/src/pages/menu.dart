@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sumaqwarmi2/src/pages/administrador.dart';
 import 'package:sumaqwarmi2/src/pages/categoria.dart';
-//import 'package:sumaqwarmi2/src/pages/login.dart';
+import 'package:sumaqwarmi2/src/pages/login.dart';
 import 'package:sumaqwarmi2/src/pages/popular.dart';
 
 
@@ -23,10 +23,10 @@ class _MenuState extends State<Menu> {
   // funcion para indicar el index de la pagina segun corresponda
   Widget _callPage(int n){
     switch(n){
-      case 0: return const Popular();
+      case 0: return Popular();
       case 1: return const Categoria();
-      case 2: return  AdministradorPage();
-      default: return const Popular();
+      case 2: return   Login();
+      default: return  Popular();
     }
   }
   //creamos la barra de navegacion en la parte inferior del aplicativo

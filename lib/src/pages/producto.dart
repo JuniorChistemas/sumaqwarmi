@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sumaqwarmi2/src/models/productoModel.dart';
 import 'package:sumaqwarmi2/src/providers/productoProvider.dart';
 import 'package:sumaqwarmi2/src/utils/validaciones.dart' as val;
@@ -15,12 +18,18 @@ class _ProductoPageState extends State<ProductoPage> {
 
   ProductoModel producto = new ProductoModel();
 
+  //bool
+  bool _guardando = false;
+
   final db = new ProductoProvider();
 
   //key para validar el formulario
   final llaveForm = GlobalKey<FormState>();
   //key para obtener una referencia snackbar
   final llaveScaffol = GlobalKey<ScaffoldState>();
+  //instancia para foto
+  File? foto;
+
   @override
   Widget build(BuildContext context) {
     //tomamos el argumento
@@ -34,8 +43,16 @@ class _ProductoPageState extends State<ProductoPage> {
         backgroundColor: Colors.pinkAccent[100],
         title: Text('CRUD productos'),
         actions:<Widget> [
-          IconButton(onPressed: (){}, icon: Icon(Icons.photo)),
-          IconButton(onPressed: (){}, icon: Icon(Icons.camera_alt)),
+          IconButton(
+              onPressed: (){
+                _seleccionarFoto();
+              },
+              icon: Icon(Icons.photo)
+          ),
+          IconButton(onPressed:(){
+            _tomarFoto();
+          },
+              icon: Icon(Icons.camera_alt)),
         ],
       ),
       body: SingleChildScrollView(
@@ -45,6 +62,7 @@ class _ProductoPageState extends State<ProductoPage> {
             key: llaveForm,
             child: Column(
               children:<Widget> [
+                _mostrarFoto(),
                 _Nombre(),
                 _Precio(),
                 _ingredientes(),
@@ -118,7 +136,7 @@ class _ProductoPageState extends State<ProductoPage> {
   Widget _crearBotom(){
     return ElevatedButton(
         onPressed: (){
-          enviarDatos();
+          (_guardando)?null:enviarDatos();
         },
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 20.0,horizontal: 10.0),
@@ -137,16 +155,23 @@ class _ProductoPageState extends State<ProductoPage> {
     if(!llaveForm.currentState!.validate()) return;
     print('Todos correcto');
     llaveForm.currentState?.save();
-    print(producto.nombre.toString());
-    print(producto.precio.toString());
-
+    setState(() {
+      _guardando = true;
+    });
+    if(foto!=null){
+      producto.foto = await db.subirImagen(foto!);
+    }
     if(producto.idu==null){
       print("entre en el condicional para guardar");
       await db.CrearProducto(producto);
     }else{
       await db.ActualizarProducto(producto);
     }
+    setState(() {
+      _guardando = false;
+    });
     mostrarSnackbar('Informacion guardada');
+    Navigator.pushReplacementNamed(context, 'administrador');
   }
   void mostrarSnackbar(String mensaje){
     final snackBar = SnackBar(
@@ -164,6 +189,51 @@ class _ProductoPageState extends State<ProductoPage> {
       }),
       activeColor: Colors.pinkAccent,
     );
+  }
+
+  _seleccionarFoto()async{
+    try {
+       final fotoTemp = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (fotoTemp != null) {
+        setState(() {
+          foto = File(fotoTemp.path);
+        });
+      }
+    } catch (e) {
+      print('Error al seleccionar la foto: $e');
+    }
+  }
+  Widget _mostrarFoto() {
+    if (producto.foto != null) {
+      return FadeInImage(
+          placeholder: AssetImage('assets/placeholder.gif'),
+          image: NetworkImage(producto.foto!),
+          height: 300.0,
+          fit: BoxFit.cover,
+      ); // Puedes personalizar esto según tus necesidades
+    } else if (foto != null) {
+      return Image(
+        image: FileImage(foto!),
+        height: 300.0,
+        fit: BoxFit.cover,
+      );
+    } else {
+      // Si no hay foto, puedes mostrar una imagen predeterminada o algún indicador
+      return Image.asset('assets/no-image.png', height: 300.0, fit: BoxFit.cover);
+    }
+  }
+
+  _tomarFoto() async{
+    try {
+      final fotoTemp = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (fotoTemp != null) {
+        setState(() {
+          foto = File(fotoTemp.path);
+        });
+      }
+    } catch (e) {
+      print('Error al seleccionar la foto: $e');
+    }
   }
 }
 

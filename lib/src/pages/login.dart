@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sumaqwarmi2/src/bloc/provider.dart';
+import 'package:sumaqwarmi2/src/providers/loginProvider.dart';
+import 'package:sumaqwarmi2/src/utils/validaciones.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
-
+  final usuario = new LoginProvider();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,7 +150,7 @@ class Login extends StatelessWidget {
             decoration: InputDecoration(
               icon: Icon(Icons.lock),
               labelText: 'contraseña',
-              counterText: sna.data.toString(),
+              //counterText: sna.data.toString(),
               errorText: sna.error.toString(),
             ),
             onChanged: bloc.changePassword,
@@ -183,11 +184,13 @@ class Login extends StatelessWidget {
       },
     );
   }
-  _imprimirDatos(BuildContext context,LoginBloc bloc){
-    print("===============");
-    print("gmail => ${bloc.getEmail}");
-    print("password => ${bloc.getPassword} ");
-    print("===============");
-    Navigator.pushReplacementNamed(context, 'administrador');
+
+  _imprimirDatos(BuildContext context,LoginBloc bloc)async{
+    Map<String,dynamic> info = await usuario.signInWithEmailAndPassword(bloc.getEmail, bloc.getPassword);
+    if(info['ok']){
+      Navigator.pushNamed(context, 'administrador');
+    }else{
+      mostrarAlerta(context, 'datos incorrectos');
+    }
   }
 }

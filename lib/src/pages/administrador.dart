@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sumaqwarmi2/src/models/productoModel.dart';
+import 'package:sumaqwarmi2/src/providers/loginProvider.dart';
 import 'package:sumaqwarmi2/src/providers/productoProvider.dart';
 class AdministradorPage extends StatelessWidget {
-
+    AdministradorPage({super.key});
   final productosProvider = new ProductoProvider();
+  final loginProvider = new LoginProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +13,14 @@ class AdministradorPage extends StatelessWidget {
       appBar: AppBar(
         //aqui le podemos agregar el nombre del usuario y luego decir bienvenido
         title: Text('Administrador'),
+        actions:<Widget> [
+          IconButton(
+              onPressed: (){
+                _salirBotom(context);
+              },
+              icon: Icon(Icons.exit_to_app)
+          ),
+        ],
       ),
       body: _listProductos(),
       floatingActionButton: _crearBotom(context),
@@ -77,13 +87,29 @@ class AdministradorPage extends StatelessWidget {
                       //funcion para borrar un producto
                       productosProvider.borrarProducto(producto.idu!);
                     },
-                    child: ListTile(
-                      title: Text(producto.nombre!),
-                      subtitle: Text('Id: ${producto.idu}'),
-                      onTap: (){
-                        Navigator.pushNamed(context, 'producto',arguments: producto);
-                      },
-                    ));
+                    child: Card(
+                      child: Column(
+                        children: [
+                          (producto.foto == null)
+                              ? Image(image: AssetImage('assets/no-image.png'))
+                              : FadeInImage(
+                            placeholder: AssetImage('assets/placeholder.gif'),
+                            image: NetworkImage(producto.foto!),
+                            height: 100.0,
+                            width: 100.0,
+                            fit: BoxFit.cover,
+                          ),
+                          ListTile(
+                            title: Text(producto.nombre!),
+                            subtitle: Text('Id: ${producto.idu}'),
+                            onTap: (){
+                              Navigator.pushNamed(context, 'producto',arguments: producto);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                );
               },
             );
           }
@@ -96,4 +122,13 @@ class AdministradorPage extends StatelessWidget {
         child: Icon(Icons.add),
     );
   }
+  _salirBotom(BuildContext context)async{
+      try{
+        await loginProvider.signOut();
+        // Navegar a la página principal
+        Navigator.pushReplacementNamed(context, 'menu');
+      }catch(e){
+        print('no funciona el metodo');
+      }
+    }
 }
