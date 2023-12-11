@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sumaqwarmi2/src/pages/administrador.dart';
 import 'package:sumaqwarmi2/src/pages/categoria.dart';
 import 'package:sumaqwarmi2/src/pages/login.dart';
 import 'package:sumaqwarmi2/src/pages/popular.dart';

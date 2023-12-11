@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:sumaqwarmi2/firebase_options.dart';
 import 'package:sumaqwarmi2/src/bloc/provider.dart';
 import 'package:sumaqwarmi2/src/pages/administrador.dart';
+import 'package:sumaqwarmi2/src/pages/mascarilla.dart';
 import 'package:sumaqwarmi2/src/pages/menu.dart';
 import 'package:sumaqwarmi2/src/pages/producto.dart';
 
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
           'menu' : (BuildContext context) => Menu(),
           'administrador' : (BuildContext context) => AdministradorPage(),
           'producto': (BuildContext context) =>    ProductoPage(),
+          // mi catalago por categorias
+          'mascarilla' : (BuildContext context) => MascarillaPage(),
         },
       ),
     );

@@ -15,7 +15,7 @@ class ProductoPage extends StatefulWidget {
 class _ProductoPageState extends State<ProductoPage> {
 
   ProductoModel producto = new ProductoModel();
-  List<String> _categoria = ['Mascarrillas','Exfoliantes','Faciales','Jabones organicos','Cremas','Kits','Tonicos faciales','Otros'];
+  List<String> _categoria = ['Mascarillas','Exfoliantes','Faciales','Jabones organicos','Cremas','Kits','Tonicos faciales','Otros'];
   //bool
   bool _guardando = false;
 

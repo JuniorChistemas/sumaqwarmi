@@ -19,7 +19,7 @@ class _CategoriaState extends State<Categoria> {
             child: Column(
               children:<Widget> [
                 _titulos(),
-                _botonesRedondeados(),
+                _botonesRedondeados(context),
               ],
             ),
           ),
@@ -43,64 +43,65 @@ class _CategoriaState extends State<Categoria> {
         )
     );
   }
-  Widget _crearBoton(Color color,IconData icono,String texto){
-    return Container(
-      height: 180.0,
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
+  Widget _crearBoton(BuildContext context, Color color, IconData icono, String texto, String ruta) {
+    return GestureDetector(
+      child: Container(
+        height: 180.0,
+        margin: EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
           color: Color.fromRGBO(62, 66, 107, 0.7),
-          borderRadius: BorderRadius.circular(20.0)
-      ),
-      child: GestureDetector(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children:<Widget> [
+          children: <Widget>[
             SizedBox(height: 5.0,),
             CircleAvatar(
               backgroundColor: color,
               radius: 35.0,
-              child: Icon(icono,color: Colors.white,size: 20,),
+              child: Icon(icono, color: Colors.white, size: 20,),
             ),
-            Text(texto,style: TextStyle(color: Colors.pinkAccent),),
+            Text(texto, style: TextStyle(color: Colors.pinkAccent),),
             SizedBox(height: 5.0,),
           ],
         ),
-        onTap: (){
-          //Navigator.pushNamed(context, pagina,arguments: );
-          print('hizo click.... !!!!!!');
-        },
-      )
+      ),
+      onTap: () {
+        Navigator.pushNamed(context, 'mascarilla',arguments: ruta );
+      },
     );
   }
-  Widget _botonesRedondeados(){
+
+  Widget _botonesRedondeados(BuildContext context) {
     return Table(
-      children:<TableRow> [
+      children: <TableRow>[
         TableRow(
-            children:<Widget> [
-              _crearBoton(Colors.blue,Icons.cable,'CABELLO'),
-              _crearBoton(Colors.purple,Icons.ac_unit_sharp,'EXFOLIANTES'),
-            ]
+          children: <Widget>[
+            _crearBoton(context, Colors.blue, Icons.cable, 'Mascarillas', 'mascarilla'),
+            _crearBoton(context, Colors.purple, Icons.ac_unit_sharp, 'Exfoliantes', 'exfoliante'),
+          ],
         ),
         TableRow(
-            children:<Widget> [
-              _crearBoton(Colors.pinkAccent,Icons.account_circle_outlined,'FACIALES'),
-              _crearBoton(Colors.orange,Icons.account_balance_wallet_rounded,'JABONES ORGANICOS'),
-            ]
+          children: <Widget>[
+            _crearBoton(context, Colors.pinkAccent, Icons.account_circle_outlined, 'Faciales', 'facial'),
+            _crearBoton(context, Colors.orange, Icons.account_balance_wallet_rounded, 'Jabones organicos', 'jabon'),
+          ],
         ),
         TableRow(
-            children:<Widget> [
-              _crearBoton(Colors.lightGreen,Icons.add_moderator,'MASCARIILAS'),
-              _crearBoton(Colors.grey,Icons.padding_rounded,'KIST'),
-            ]
+          children: <Widget>[
+            _crearBoton(context, Colors.lightGreen, Icons.add_moderator, 'Cremas', 'crema'),
+            _crearBoton(context, Colors.grey, Icons.padding_rounded, 'KIST', 'kit'),
+          ],
         ),
         TableRow(
-            children:<Widget> [
-              _crearBoton(Colors.cyan,Icons.add_circle,'TONICO FACIAL'),
-              _crearBoton(Colors.teal,Icons.production_quantity_limits_outlined,'OTROS PRODUCTOS'),
-            ]
+          children: <Widget>[
+            _crearBoton(context, Colors.cyan, Icons.add_circle, 'Tonicos', 'tonico'),
+            _crearBoton(context, Colors.teal, Icons.production_quantity_limits_outlined, 'OTROS PRODUCTOS', 'otros'),
+          ],
         ),
       ],
     );
   }
+
 }
 

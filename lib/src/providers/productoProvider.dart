@@ -73,6 +73,28 @@ class ProductoProvider{
       return [];
     }
   }
+  Future<List<ProductoModel>> cargarDatosMascarilla(String categoria)async{
+    try {
+      List<ProductoModel> items = [];
+      CollectionReference reference = db.collection('productos');
+      QuerySnapshot datos = await reference.where('tratamiento', isEqualTo: categoria).get();
+      items = datos.docs.map((doc) {
+        String id = doc.id; // Obtener el ID único del documento
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        // Añadir el ID al campo 'id' en los datos
+        data['id'] = id;
+        // Crear un ProductoModel con el ID y el resto de los datos
+        ProductoModel producto = ProductoModel.fromJson(data);
+        return producto;
+      }).toList();
+      print(items.toString());
+      return items;
+    } catch (error) {
+      print('Error al obtener productos de la categoria desde Firestore: $error');
+      return [];
+    }
+  }
+
   Future<void> borrarProducto(String id)async{
     await db.collection('productos').doc(id).delete();
     print('producto borrado');
